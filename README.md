@@ -4,7 +4,7 @@
 ## Build
 
 ~~~bash
-docker build -t raspbian:openvino
+docker build -t raspbian:openvino .
 ~~~
 
 
