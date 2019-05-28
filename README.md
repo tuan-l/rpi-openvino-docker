@@ -1,14 +1,14 @@
 # Dockerfile to build Intel® Distribution of OpenVINO™ Toolkit docker image for Raspberry Pi
 
 
-## Build:
+## Build
 
 ~~~bash
 docker build -t raspbian:openvino
 ~~~
 
 
-## Run the Docker image in privileged mode:
+## Run the Docker image in privileged mode
 
 ~~~bash
 docker run --privileged –v /dev:/dev -it --rm raspbian:openvino
