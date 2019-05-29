@@ -3,6 +3,9 @@ LABEL maintainer="tuanlm@greenglobal.vn"
 LABEL build_date="2019-05-28"
 LABEL description="Intel® Distribution of OpenVINO™ Toolkit for Raspberry Pi"
 
+# Use root user for building and installing dependencies
+USER root
+
 
 # Update the system and install some dependencies
 RUN apt update && apt upgrade -y
@@ -44,7 +47,7 @@ RUN cd /tmp/ && \
 
 
 ENV AITL_DIR=/aitl
-ENV OPENVINO_DIR="${AITL_DIR}/inference_engine_vpu_arm"
+ENV OPENVINO_DIR="/opt/intel/inference_engine_vpu_arm"
 
 # Copy over OpenVINO installer
 COPY ./files/inference_engine_vpu_arm "${OPENVINO_DIR}"
@@ -52,17 +55,26 @@ COPY ./files/inference_engine_vpu_arm "${OPENVINO_DIR}"
 # Correct install location
 RUN sed -i "s|<INSTALLDIR>|${OPENVINO_DIR}|" "${OPENVINO_DIR}/bin/setupvars.sh"
 
-# Add setupvars to ~/.bashrc
-RUN /bin/bash -c "echo source ${OPENVINO_DIR}/bin/setupvars.sh >> ~/.bashrc"
-
 # Install NCS udev rules
 RUN chmod +x "${OPENVINO_DIR}/install_dependencies/install_NCS_udev_rules.sh"
 RUN /bin/bash -c "source ${OPENVINO_DIR}/bin/setupvars.sh && \
                 ${OPENVINO_DIR}/install_dependencies/install_NCS_udev_rules.sh"
 
 
-ENV PYTHONPATH="${OPENVINO_DIR}/python/python3.5/armv7l/:${PYTHONPATH}"
+# Processes in container should not run as root user!
+ARG USER=aitl
+
+RUN groupadd -g 999 ${USER} && \
+   useradd -m -d ${AITL_DIR} -c "AITL" -r -u 999 -g ${USER} ${USER} && \
+   echo "${USER} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USER} && \
+   chmod 0440 /etc/sudoers.d/${USER}
+USER ${USER}
 
 WORKDIR ${AITL_DIR}
+
+# Add setupvars to ~/.bashrc
+RUN /bin/bash -c "echo source ${OPENVINO_DIR}/bin/setupvars.sh >> ~/.bashrc"
+ENV PYTHONPATH="${OPENVINO_DIR}/python/python3.5/armv7l/:${PYTHONPATH}"
 COPY ./code ./code
+
 CMD ["/bin/bash"]
