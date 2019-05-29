@@ -4,30 +4,43 @@
 ## Build
 
 ~~~bash
-docker build -t raspbian:openvino .
+$ docker build -t raspbian:openvino .
 ~~~
 
 
 ## Run the Docker image in privileged mode
 
 ~~~bash
-docker run --privileged –v /dev:/dev -it --rm raspbian:openvino
+$ docker run --privileged –v /dev:/dev -it --rm raspbian:openvino
 ~~~
 
 
 ## Run the Docker image with X11 forwarding
 
-~~~bash
-XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
-xauth nlist $DISPLAY | sed 's/^..../ffff/' | xauth -f $XAUTH nmerge -
+- Setup X11
 
-docker run --privileged \
+~~~bash
+$ XSOCK=/tmp/.X11-unix
+$ XAUTH=/tmp/.docker.xauth
+$ touch $XAUTH
+$ xauth nlist $DISPLAY | sed 's/^..../ffff/' | xauth -f $XAUTH nmerge -
+~~~
+
+- Starting the docker container
+
+~~~bash
+# Adds docker to X server access control list.
+$ xhost + local:docker
+
+# Run the container with X forwarding
+$ docker run --privileged \
   -v /dev:/dev \
   -v $XSOCK:$XSOCK \
-  -e DISPLAY=$DISPLAY \
+  -v $XAUTH:$XAUTH \
   -e XAUTH=$XAUTH \
-  -it --rm raspbian:openvino
+  -e DISPLAY \
+  -it --rm --name=rpi-openvino \
+  raspbian:openvino
  ~~~
  
  
