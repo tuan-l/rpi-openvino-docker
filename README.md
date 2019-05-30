@@ -38,6 +38,10 @@ $ docker run --privileged –v /dev:/dev -it --rm raspbian:openvino
 ### Using make
 
 ~~~bash
+# run docker image with simple CLI
+$ make run [ [image=raspbian:openvino] ]
+
+# or with X11 forwarding
 $ make runx11 [ [image=raspbian:openvino] ]
 ~~~
 
