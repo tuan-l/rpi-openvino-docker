@@ -46,7 +46,7 @@ Now, if we browse to http://192.168.1.99:50000/v2/_catalog we will see that our 
 }
 ~~~
 
-Moreover, if we navigate to http://localhost:50000/v2/aitl/raspbian/tags/list we’ll see:
+Moreover, if we navigate to http://192.168.1.99:50000/v2/aitl/raspbian/tags/list we’ll see:
 
 ~~~json
 {
