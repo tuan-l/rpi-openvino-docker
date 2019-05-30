@@ -6,6 +6,8 @@ LABEL description="Intel® Distribution of OpenVINO™ Toolkit for Raspberry Pi"
 # Use root user for building and installing dependencies
 USER root
 
+# Enable QEMU for ARM to build ARM image on X86 machine
+COPY ./qemu-arm-static /usr/bin/qemu-arm-static
 
 # Update the system and install some dependencies
 RUN apt update && apt upgrade -y
@@ -68,8 +70,8 @@ RUN /bin/bash -c "source ${OPENVINO_DIR}/bin/setupvars.sh && \
 ARG USER=aitl
 
 RUN groupadd -g 999 ${USER} && \
-   useradd -m -d ${AITL_DIR} -c "AITL" -r -u 999 -g ${USER} ${USER} && \
-   echo "${USER} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USER} && \
+   useradd --create-home --home-dir ${AITL_DIR} --comment "AITL" \
+      --shell /bin/bash --system --uid 999 --gid ${USER} ${USER} && \
    chmod 0440 /etc/sudoers.d/${USER}
 USER ${USER}
 
