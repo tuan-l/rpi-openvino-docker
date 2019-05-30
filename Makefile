@@ -5,14 +5,22 @@ help:
 	@echo "\tinstall_qemu		Install QEMU (for building ARM image on x86 machines)"
 	@echo "\tbuild			Build docker image"
 	@echo "\trun			Run the docker image"
+	@echo "\trunx11			Run the docker image with X11 forwarding"
 
-.PHONY: install_qemu
-install_qemu:
-	@/bin/bash qemu_install.sh
 
 ifndef file
 	file = Dockerfile
 endif
+
+ifndef image
+	image = raspbian:openvino
+endif
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
+
+.PHONY: install_qemu
+install_qemu:
+	@/bin/bash qemu_install.sh
 
 .PHONY: build
 build:
@@ -28,15 +36,13 @@ build:
 	fi;
 
 	@echo Building docker image...
-	@docker build -t raspbian:openvino -f ${file} .
-
-ifndef image
-	image = raspbian:openvino
-endif
-XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
+	@docker build -t ${image} -f ${file} .
 
 .PHONY: run
+run:
+	@docker run --privileged –v /dev:/dev -it --rm ${image}
+
+.PHONY: runx11
 run:
 	@touch ${XAUTH}
 	@xauth nlist ${DISPLAY} | sed 's/^..../ffff/' | xauth -f ${XAUTH} nmerge -

@@ -1,18 +1,45 @@
 # Dockerfile to build Intel® Distribution of OpenVINO™ Toolkit docker image for Raspberry Pi
 
+# Make commands
+
+~~~bash
+# Usage: Building ARM docker image on x86 machines
+#         help            Display this message
+#         install_qemu    Install QEMU (for building ARM image on x86 machines)
+#         build           Build docker image
+#         run             Run the docker image
+#         runx11          Run the docker image with X11 forwarding
+~~~
+
 ## Build
 
 ~~~bash
+# use make
+$ make build [ [file=Dockerfile] [image=raspbian:openvino] ]
+
+# or docker build
 $ docker build -t raspbian:openvino .
 ~~~
 
 ## Run the Docker image in privileged mode
 
 ~~~bash
+# use make
+$ make run [ [image=raspbian:openvino] ]
+
+# or docker run
 $ docker run --privileged –v /dev:/dev -it --rm raspbian:openvino
 ~~~
 
 ## Run the Docker image with X11 forwarding
+
+### Using make
+
+~~~bash
+$ make runx11 [ [image=raspbian:openvino] ]
+~~~
+
+### Using docker commands
 
 - Setup X11
 
