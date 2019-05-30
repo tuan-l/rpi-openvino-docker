@@ -1,5 +1,7 @@
 # Dockerfile to build Intel® Distribution of OpenVINO™ Toolkit docker image for Raspberry Pi
 
+** Note: for seting up your own local docker registry, follow [this tutoral](LOCAL_DOCKER_REGISTRY.md).
+
 # Make commands
 
 ~~~bash
