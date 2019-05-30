@@ -80,3 +80,5 @@ Do as following to resolve:
     ~~~bash
     sudo service docker restart
     ~~~
+
+Reference: [Docker Hub vs Creating a Local Docker Registry](https://code-maze.com/docker-hub-vs-creating-docker-registry/)
