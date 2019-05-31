@@ -88,8 +88,8 @@ RUN echo "\n \
    source ${OPENVINO_DIR}/bin/setupvars.sh\n \
    \n \
    # Some ENV variables\n \
-   export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH\n \
-   export PYTHONPATH=${OPENVINO_DIR}/python/python3.5/armv7l:$PYTHONPATH\n \
+   export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:\$PYTHONPATH\n \
+   export PYTHONPATH=${OPENVINO_DIR}/python/python3.5/armv7l:\$PYTHONPATH\n \
    export QT_X11_NO_MITSHM=1\n \
    export XAUTH=/tmp/.docker.xauth\n" \
    >> ~/.bashrc
