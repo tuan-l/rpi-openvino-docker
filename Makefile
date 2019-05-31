@@ -9,12 +9,13 @@ help:
 
 
 ifndef file
-	file = Dockerfile
+file = Dockerfile
 endif
 
 ifndef image
-	image = raspbian:openvino
+image = raspbian:openvino
 endif
+
 XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth
 
@@ -40,10 +41,10 @@ build:
 
 .PHONY: run
 run:
-	@docker run --privileged –v /dev:/dev -it --rm ${image}
+	@docker run --privileged -v /dev:/dev -it --rm ${image}
 
 .PHONY: runx11
-run:
+runx11:
 	@touch ${XAUTH}
 	@xauth nlist ${DISPLAY} | sed 's/^..../ffff/' | xauth -f ${XAUTH} nmerge -
 	@xhost + local:docker
@@ -53,5 +54,6 @@ run:
 		-v ${XAUTH}:${XAUTH} \
 		-e XAUTH=${XAUTH} \
 		-e DISPLAY \
+		-e QT_X11_NO_MITSHM=1 \
 		-it --rm \
 		${image}

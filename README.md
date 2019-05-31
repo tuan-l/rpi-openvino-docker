@@ -69,6 +69,7 @@ $ docker run --privileged \
   -v ${XAUTH}:${XAUTH} \
   -e XAUTH=${XAUTH} \
   -e DISPLAY \
+  -e QT_X11_NO_MITSHM=1 \
   -it --rm --name=rpi-openvino \
   raspbian:openvino
 
