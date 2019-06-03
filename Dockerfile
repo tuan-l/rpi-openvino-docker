@@ -95,5 +95,6 @@ RUN echo "\n \
    >> ~/.bashrc
 
 COPY ./code ./code
+RUN sudo chown -R ${USER}:${USER} ./code
 
 CMD ["/bin/bash"]
