@@ -1,5 +1,5 @@
 FROM balenalib/rpi-raspbian:stretch
-LABEL maintainer="tuanlm@greenglobal.vn"
+LABEL maintainer="t"
 LABEL build_date="2019-05-29"
 LABEL description="Intel® Distribution of OpenVINO™ Toolkit for Raspberry Pi"
 
